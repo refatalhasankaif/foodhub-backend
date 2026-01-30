@@ -97,16 +97,16 @@ model Review {
 }
 
 model User {
-  id            String     @id
+  id            String    @id
   name          String
   email         String
-  emailVerified Boolean    @default(false)
+  emailVerified Boolean   @default(false)
   image         String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  role          UserRole   @default(CUSTOMER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          String    @default("CUSTOMER")
+  status        String    @default("ACTIVE")
   phone         String?
-  status        UserStatus @default(ACTIVE)
   address       String?
   sessions      Session[]
   accounts      Account[]

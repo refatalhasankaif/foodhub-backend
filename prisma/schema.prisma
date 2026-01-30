@@ -1,3 +1,4 @@
+
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma/client"
@@ -7,7 +8,6 @@ datasource db {
   provider = "postgresql"
 }
 
-
 model ProviderProfile {
   id             String   @id @default(cuid())
   userId         String   @unique
@@ -16,7 +16,8 @@ model ProviderProfile {
   phone          String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  meals Meal[]
+  meals          Meal[]
+
   @@map("provider_profile")
 }
 
@@ -25,24 +26,26 @@ model Category {
   name      String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  meals Meal[]
+  meals     Meal[]
+
   @@map("category")
 }
 
 model Meal {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   providerId  String
   categoryId  String
   name        String
   description String
   price       Float
-  isAvailable Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  provider   ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  category   Category        @relation(fields: [categoryId], references: [id])
-  orderItems OrderItem[]
-  reviews    Review[]
+  isAvailable Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  provider    ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  category    Category        @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+  reviews     Review[]
+
   @@index([providerId])
   @@index([categoryId])
   @@map("meal")
@@ -58,7 +61,8 @@ model Order {
   deliveryPhone   String
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
-  orderItems OrderItem[]
+  orderItems      OrderItem[]
+
   @@index([customerId])
   @@index([status])
   @@map("order")
@@ -71,8 +75,9 @@ model OrderItem {
   quantity  Int
   price     Float
   createdAt DateTime @default(now())
-  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  meal  Meal  @relation(fields: [mealId], references: [id])
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  meal      Meal     @relation(fields: [mealId], references: [id])
+
   @@index([orderId])
   @@map("order_item")
 }
@@ -85,85 +90,91 @@ model Review {
   comment   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+  meal      Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
   @@unique([userId, mealId])
   @@index([mealId])
   @@map("review")
 }
 
 model User {
-    id            String     @id
-    name          String
-    email         String
-    emailVerified Boolean    @default(false)
-    image         String?
-    createdAt     DateTime   @default(now())
-    updatedAt     DateTime   @updatedAt
-    role          UserRole   @default(CUSTOMER)
-    phone         String?
-    status        UserStatus @default(ACTIVE)
-    address       String?
-    sessions      Session[]
-    accounts      Account[]
-    @@unique([email])
-    @@map("user")
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  role          String    @default("CUSTOMER")
+  status        String    @default("ACTIVE")
+  phone         String?
+  address       String?
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("user")
 }
 
 model Session {
-    id        String   @id
-    expiresAt DateTime
-    token     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    ipAddress String?
-    userAgent String?
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    @@unique([token])
-    @@index([userId])
-    @@map("session")
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
 }
 
 model Account {
-    id                    String    @id
-    accountId             String
-    providerId            String
-    userId                String
-    user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    accessToken           String?
-    refreshToken          String?
-    idToken               String?
-    accessTokenExpiresAt  DateTime?
-    refreshTokenExpiresAt DateTime?
-    scope                 String?
-    password              String?
-    createdAt             DateTime  @default(now())
-    updatedAt             DateTime  @updatedAt
-    @@index([userId])
-    @@map("account")
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
 }
 
 model Verification {
-    id         String   @id
-    identifier String
-    value      String
-    expiresAt  DateTime
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
-    @@index([identifier])
-    @@map("verification")
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
 
 enum UserRole {
-    CUSTOMER
-    PROVIDER
-    ADMIN
+  CUSTOMER
+  PROVIDER
+  ADMIN
 }
 
 enum UserStatus {
-    ACTIVE
-    SUSPENDED
+  ACTIVE
+  SUSPENDED
 }
+
 enum OrderStatus {
   PLACED
   PREPARING
