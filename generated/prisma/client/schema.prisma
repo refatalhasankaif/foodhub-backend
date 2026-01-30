@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ========================================
+// BETTER AUTH WILL AUTO-GENERATE:
+// - user
+// - session
+// - account
+// - verification
+// ========================================
+
+// ========================================
+// FOODHUB MODELS (Mandatory Only)
+// ========================================
+
+enum UserRole {
+  CUSTOMER
+  PROVIDER
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum OrderStatus {
+  PLACED
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+// Provider profile (linked to Better Auth user)
+model ProviderProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  restaurantName String
+  address        String
+  phone          String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  meals Meal[]
+
+  @@map("provider_profile")
+}
+
+// Food categories
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meals Meal[]
+
+  @@map("category")
+}
+
+// Meals/Menu items
+model Meal {
+  id          String   @id @default(cuid())
+  providerId  String
+  categoryId  String
+  name        String
+  description String
+  price       Float
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  provider   ProviderProfile @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  category   Category        @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+  reviews    Review[]
+
+  @@index([providerId])
+  @@index([categoryId])
+  @@map("meal")
+}
+
+// Customer orders
+model Order {
+  id              String      @id @default(cuid())
+  customerId      String
+  orderNumber     String      @unique
+  status          OrderStatus @default(PLACED)
+  totalAmount     Float
+  deliveryAddress String
+  deliveryPhone   String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([customerId])
+  @@index([status])
+  @@map("order")
+}
+
+// Order items
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  mealId    String
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  meal  Meal  @relation(fields: [mealId], references: [id])
+
+  @@index([orderId])
+  @@map("order_item")
+}
+
+// Reviews
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  mealId    String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  meal Meal @relation(fields: [mealId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, mealId])
+  @@index([mealId])
+  @@map("review")
+}
