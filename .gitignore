@@ -2,3 +2,4 @@
 node_modules
 prisma/generated/
 prisma/migrations/
+/src/generated/prisma
