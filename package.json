@@ -6,6 +6,7 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "npx tsx watch src/server.ts",
+        "build": "tsc",
         "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
     },
     "keywords": [],
