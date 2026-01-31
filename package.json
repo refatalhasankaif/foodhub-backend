@@ -2,17 +2,18 @@
     "name": "foodhub-backend",
     "version": "1.0.0",
     "description": "",
-    "main": "dist/server.mjs",
+    "main": "dist/server.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "npx tsx watch src/server.ts",
-        "build": "prisma generate && tsup src/server.ts --format esm --platform node --target node20 --outDir dist --external pg-native",
+        "build": "prisma generate && tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --external pg-native",
         "start": "node dist/server.js",
         "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
+    "type": "commonjs",
     "dependencies": {
         "@neondatabase/serverless": "^1.0.2",
         "@prisma/adapter-pg": "^7.3.0",
