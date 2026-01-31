@@ -13,7 +13,6 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "type": "commonjs",
     "dependencies": {
         "@neondatabase/serverless": "^1.0.2",
         "@prisma/adapter-pg": "^7.3.0",
