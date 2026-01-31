@@ -1,14 +1,14 @@
 import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
-import { auth } from "./lib/auth";
-import { notFound } from "./middlewares/notFound";
 import { authRouter } from "./module/auth/auth.routes";
 import { providerRoutes } from "./module/providers/provider.routes";
+import { auth } from "./lib/auth";
 import { mealRoutes } from "./module/meals/meals.routes";
-import { adminRoutes } from "./module/admin/admin.routes";
 import { orderRoutes } from "./module/orders/order.routes";
 import { reviewRoutes } from "./module/reviews/reviews.routes";
+import { adminRoutes } from "./module/admin/admin.routes";
+import { notFound } from "./middlewares/notFound";
 
 const app: Application = express();
 

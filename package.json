@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "npx tsx watch src/server.ts",
-        "build": "tsc",
+        "build": "prisma generate && tsup src/server.ts --format esm --platform node --target node20 --outDir dist --external pg-native",
+        "start": "node dist/server.js",
         "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
     },
     "keywords": [],
