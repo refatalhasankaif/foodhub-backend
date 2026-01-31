@@ -33,7 +33,7 @@ export const auth = betterAuth({
             },
             address: {
                 type: "string",
-                required: false,
+                required: true,
                 input: true
             },
         },

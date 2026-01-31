@@ -8832,7 +8832,7 @@ export namespace Prisma {
     role: string
     status: string
     phone: string | null
-    address: string | null
+    address: string
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -8937,7 +8937,7 @@ export namespace Prisma {
       role: string
       status: string
       phone: string | null
-      address: string | null
+      address: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -13783,7 +13783,7 @@ export namespace Prisma {
     role?: StringFilter<"User"> | string
     status?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    address?: StringNullableFilter<"User"> | string | null
+    address?: StringFilter<"User"> | string
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
   }
@@ -13799,7 +13799,7 @@ export namespace Prisma {
     role?: SortOrder
     status?: SortOrder
     phone?: SortOrderInput | SortOrder
-    address?: SortOrderInput | SortOrder
+    address?: SortOrder
     sessions?: SessionOrderByRelationAggregateInput
     accounts?: AccountOrderByRelationAggregateInput
   }
@@ -13818,7 +13818,7 @@ export namespace Prisma {
     role?: StringFilter<"User"> | string
     status?: StringFilter<"User"> | string
     phone?: StringNullableFilter<"User"> | string | null
-    address?: StringNullableFilter<"User"> | string | null
+    address?: StringFilter<"User"> | string
     sessions?: SessionListRelationFilter
     accounts?: AccountListRelationFilter
   }, "id" | "email">
@@ -13834,7 +13834,7 @@ export namespace Prisma {
     role?: SortOrder
     status?: SortOrder
     phone?: SortOrderInput | SortOrder
-    address?: SortOrderInput | SortOrder
+    address?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -13854,7 +13854,7 @@ export namespace Prisma {
     role?: StringWithAggregatesFilter<"User"> | string
     status?: StringWithAggregatesFilter<"User"> | string
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
-    address?: StringNullableWithAggregatesFilter<"User"> | string | null
+    address?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type SessionWhereInput = {
@@ -14525,7 +14525,7 @@ export namespace Prisma {
     role?: string
     status?: string
     phone?: string | null
-    address?: string | null
+    address: string
     sessions?: SessionCreateNestedManyWithoutUserInput
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
@@ -14541,7 +14541,7 @@ export namespace Prisma {
     role?: string
     status?: string
     phone?: string | null
-    address?: string | null
+    address: string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
@@ -14557,7 +14557,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
@@ -14573,7 +14573,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
@@ -14589,7 +14589,7 @@ export namespace Prisma {
     role?: string
     status?: string
     phone?: string | null
-    address?: string | null
+    address: string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -14603,7 +14603,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -14617,7 +14617,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
   }
 
   export type SessionCreateInput = {
@@ -16876,7 +16876,7 @@ export namespace Prisma {
     role?: string
     status?: string
     phone?: string | null
-    address?: string | null
+    address: string
     accounts?: AccountCreateNestedManyWithoutUserInput
   }
 
@@ -16891,7 +16891,7 @@ export namespace Prisma {
     role?: string
     status?: string
     phone?: string | null
-    address?: string | null
+    address: string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16922,7 +16922,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
   }
 
@@ -16937,7 +16937,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -16952,7 +16952,7 @@ export namespace Prisma {
     role?: string
     status?: string
     phone?: string | null
-    address?: string | null
+    address: string
     sessions?: SessionCreateNestedManyWithoutUserInput
   }
 
@@ -16967,7 +16967,7 @@ export namespace Prisma {
     role?: string
     status?: string
     phone?: string | null
-    address?: string | null
+    address: string
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -16998,7 +16998,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
     sessions?: SessionUpdateManyWithoutUserNestedInput
   }
 
@@ -17013,7 +17013,7 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     status?: StringFieldUpdateOperationsInput | string
     phone?: NullableStringFieldUpdateOperationsInput | string | null
-    address?: NullableStringFieldUpdateOperationsInput | string | null
+    address?: StringFieldUpdateOperationsInput | string
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
   }
 

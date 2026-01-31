@@ -4,6 +4,7 @@ import { UserRole, UserStatus } from "../../generated/prisma/client"
 async function seedAdmin() {
     try {
         const adminEmail = "admin@foodhub.com";
+        const adminAddress = "HQ - FoodHub, Mirpur - 10, Bangladesh";
 
         const existingUser = await prisma.user.findUnique({
             where: { email: adminEmail }
@@ -25,6 +26,7 @@ async function seedAdmin() {
                 email: adminEmail,
                 password: "Admin@123",
                 role: UserRole.CUSTOMER,
+                address: adminAddress
             })
         });
 

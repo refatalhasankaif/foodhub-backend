@@ -107,7 +107,7 @@ model User {
   role          String    @default("CUSTOMER")
   status        String    @default("ACTIVE")
   phone         String?
-  address       String?
+  address       String
   sessions      Session[]
   accounts      Account[]
 
