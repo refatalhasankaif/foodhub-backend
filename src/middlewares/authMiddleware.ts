@@ -35,13 +35,6 @@ const authMiddleware = (...allowedRoles: UserRole[]) => {
         });
       }
 
-      if (!session.user.emailVerified) {
-        return res.status(403).json({
-          success: false,
-          message: "Please verify your email to continue.",
-        });
-      }
-
       req.user = {
         id: session.user.id,
         email: session.user.email,
