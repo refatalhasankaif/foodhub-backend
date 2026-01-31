@@ -5,12 +5,12 @@ const getMe = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = await AuthService.getCurrentUser(req.user!.id);
 
-        res.json({
-            success: true,
-            data: user,
-        });
+        res.status(200).json(user)
     } catch (error) {
-        next(error);
+        res.status(400).json({
+            error: "User fetched failed",
+            details: error
+        })
     }
 };
 
@@ -30,7 +30,10 @@ const updateProfile = async (req: Request, res: Response, next: NextFunction) =>
             data: user,
         });
     } catch (error) {
-        next(error);
+        res.status(400).json({
+            error: "Profile update failed",
+            details: error
+        })
     }
 };
 

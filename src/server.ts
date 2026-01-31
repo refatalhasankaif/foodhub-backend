@@ -9,7 +9,7 @@ async function main() {
         console.log("Connected to database")
 
         app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`)
+            console.log(`Server is running..........`)
         })
     } catch (error) {
         console.error(error);

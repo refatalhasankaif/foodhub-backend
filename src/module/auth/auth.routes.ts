@@ -6,10 +6,12 @@ const router = Router();
 
 router.get("/me",
     authMiddleware(),
-    AuthController.getMe);
+    AuthController.getMe
+);
 
 router.patch("/profile",
     authMiddleware(),
-    AuthController.updateProfile);
+    AuthController.updateProfile
+);
 
 export const authRouter: Router = router;
