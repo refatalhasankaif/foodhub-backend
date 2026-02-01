@@ -2,6 +2,11 @@ import { Request, Response } from "express";
 import { adminService } from "./admin.service";
 import { UserStatus } from "../../../generated/prisma/client";
 
+const getDashboardStats = async (req: Request, res: Response) => {
+    const stats = await adminService.getDashboardStats();
+    res.status(200).json(stats);
+};
+
 const getAllUsers = async (req: Request, res: Response) => {
     const users = await adminService.getAllUsers();
     res.status(200).json(users);
@@ -47,6 +52,7 @@ const getAllOrders = async (req: Request, res: Response) => {
 };
 
 export const adminController = {
+    getDashboardStats,
     getAllUsers,
     updateUserStatus,
     getAllCategories,

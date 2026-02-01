@@ -5,6 +5,12 @@ import { adminController } from "./admin.controller";
 const router = Router();
 
 router.get(
+    "/dashboard", 
+    authMiddleware(UserRole.ADMIN), 
+    adminController.getDashboardStats
+);
+
+router.get(
     "/users", 
     authMiddleware(UserRole.ADMIN), 
     adminController.getAllUsers

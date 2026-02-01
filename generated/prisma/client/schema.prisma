@@ -10,6 +10,7 @@ datasource db {
 model ProviderProfile {
   id             String   @id @default(cuid())
   userId         String   @unique
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   restaurantName String
   address        String
   phone          String
@@ -37,6 +38,7 @@ model Meal {
   name        String
   description String
   price       Float
+  imageUrl    String?
   isAvailable Boolean         @default(true)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
@@ -53,6 +55,7 @@ model Meal {
 model Order {
   id              String      @id @default(cuid())
   customerId      String
+  customer        User        @relation(fields: [customerId], references: [id], onDelete: Cascade)
   orderNumber     String      @unique
   status          OrderStatus @default(PLACED)
   totalAmount     Float
@@ -84,41 +87,45 @@ model OrderItem {
 model Review {
   id        String   @id @default(cuid())
   userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   mealId    String
+  meal      Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
   rating    Int
   comment   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  meal      Meal     @relation(fields: [mealId], references: [id], onDelete: Cascade)
 
   @@unique([userId, mealId])
   @@index([mealId])
+  @@index([userId])
   @@map("review")
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  role          String    @default("CUSTOMER")
-  status        String    @default("ACTIVE")
-  phone         String?
-  address       String
-  sessions      Session[]
-  accounts      Account[]
+  id              String           @id
+  name            String
+  email           String           @unique
+  emailVerified   Boolean          @default(false)
+  image           String?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  role            String           @default("CUSTOMER")
+  status          String           @default("ACTIVE")
+  phone           String?
+  address         String
+  sessions        Session[]
+  accounts        Account[]
+  orders          Order[]
+  reviews         Review[]
+  providerProfile ProviderProfile?
 
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
@@ -126,7 +133,6 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@index([userId])
   @@map("session")
 }

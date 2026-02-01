@@ -3,11 +3,14 @@ import authMiddleware, { UserRole } from "../../middlewares/authMiddleware";
 import { providerController } from "./providers.controller";
 
 const router = Router();
-
-router.post(
-    "/create",
-    authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
-    providerController.createProviderProfile
+router.get(
+    "/",
+    providerController.getAllProviders
+);
+router.get(
+    "/dashboard",
+    authMiddleware(UserRole.PROVIDER),
+    providerController.getDashboardStats
 );
 
 router.get(
@@ -16,9 +19,10 @@ router.get(
     providerController.getMyProviderProfile
 );
 
-router.get(
-    "/:id",
-    providerController.getProviderProfileById
+router.post(
+    "/create",
+    authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
+    providerController.createProviderProfile
 );
 
 router.patch(
@@ -31,6 +35,12 @@ router.delete(
     "/delete",
     authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
     providerController.deleteProviderProfile
+);
+
+
+router.get(
+    "/:id",
+    providerController.getProviderProfileById
 );
 
 export const providerRoutes: Router = router;

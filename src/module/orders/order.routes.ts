@@ -4,11 +4,18 @@ import { orderController } from "./order.controller";
 
 const router = Router();
 
+router.get(
+    "/provider/orders",
+    authMiddleware(UserRole.PROVIDER),
+    orderController.getProviderOrders
+);
+
 router.post(
     "/",
     authMiddleware(UserRole.CUSTOMER),
     orderController.createOrder
 );
+
 router.get(
     "/",
     authMiddleware(UserRole.CUSTOMER),

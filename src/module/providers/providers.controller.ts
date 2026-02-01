@@ -3,6 +3,26 @@ import { providerService } from "./providers.service";
 
 type ProviderParams = { id: string };
 
+const getDashboardStats = async (req: Request, res: Response) => {
+    if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+
+    try {
+        const stats = await providerService.getProviderDashboardStats(req.user.id);
+        res.status(200).json(stats);
+    } catch (error: any) {
+        res.status(500).json({ error: "Failed to fetch dashboard stats", details: error });
+    }
+};
+
+const getAllProviders = async (req: Request, res: Response) => {
+    try {
+        const providers = await providerService.getAllProviders();
+        res.status(200).json(providers);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to fetch providers", details: error });
+    }
+};
+
 const createProviderProfile = async (req: Request, res: Response) => {
     if (!req.user) return res.status(401).json({ message: "Unauthorized" });
 
@@ -67,6 +87,8 @@ const deleteProviderProfile = async (req: Request, res: Response) => {
 };
 
 export const providerController = {
+    getDashboardStats,
+    getAllProviders,
     createProviderProfile,
     getMyProviderProfile,
     getProviderProfileById,

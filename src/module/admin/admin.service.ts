@@ -2,6 +2,34 @@ import { UserStatus } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 
+const getDashboardStats = async () => {
+
+    const totalUsers = await prisma.user.count();
+
+    const totalCustomers = await prisma.user.count({
+        where: { role: "CUSTOMER" },
+    });
+    const totalProviders = await prisma.user.count({
+        where: { role: "PROVIDER" },
+    });
+    const totalOrders = await prisma.order.count();
+
+    const revenueData = await prisma.order.aggregate({
+        _sum: {
+            totalAmount: true,
+        },
+    });
+    const totalRevenue = revenueData._sum.totalAmount || 0;
+
+    return {
+        totalUsers,
+        totalCustomers,
+        totalProviders,
+        totalOrders,
+        totalRevenue,
+    };
+};
+
 const getAllUsers = async () => {
     return prisma.user.findMany();
 };
@@ -36,6 +64,7 @@ const getAllOrders = async () => {
 };
 
 export const adminService = {
+    getDashboardStats,
     getAllUsers,
     updateUserStatus,
     getAllCategories,

@@ -24,6 +24,17 @@ const getMyOrders = async (req: Request, res: Response) => {
   }
 };
 
+const getProviderOrders = async (req: Request, res: Response) => {
+  try {
+    if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+
+    const orders = await orderService.getOrdersByProvider(req.user.id);
+    res.status(200).json(orders);
+  } catch (error: any) {
+    res.status(400).json({ error: "Failed to fetch provider orders", details: error.message });
+  }
+};
+
 const getOrderById = async (req: Request, res: Response) => {
   try {
     const orderId = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
@@ -49,6 +60,7 @@ const updateOrderStatus = async (req: Request, res: Response) => {
 export const orderController = {
   createOrder,
   getMyOrders,
+  getProviderOrders,
   getOrderById,
   updateOrderStatus,
 };
