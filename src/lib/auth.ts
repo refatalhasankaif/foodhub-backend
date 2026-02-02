@@ -6,22 +6,48 @@ import { APIError } from "better-auth/api";
 
 const ALLOWED_ROLES: UserRole[] = [UserRole.CUSTOMER, UserRole.PROVIDER];
 
+const isProduction = process.env.NODE_ENV === "production";
+
+// Frontend URL where the Better Auth client runs (Next.js app)
+// e.g. http://localhost:3000 in dev, https://foodhub-frontend.com in prod
+const FRONTEND_URL =
+  process.env.APP_URL?.replace(/\/$/, "") || "http://localhost:3000";
+
+// Public URL for the Better Auth endpoints as seen by the browser.
+// In this setup the frontend proxies /api/auth/* to the backend,
+// so we expose the auth endpoints on the frontend origin.
+const BETTER_AUTH_BASE_URL =
+  process.env.BETTER_AUTH_BASE_URL ||
+  `${FRONTEND_URL.replace(/\/$/, "")}/api/auth`;
+
+// Optional cookie domain for production (e.g. ".foodhub.com").
+// Leave undefined in dev so cookies are host-only on localhost.
+const COOKIE_DOMAIN = isProduction ? process.env.COOKIE_DOMAIN : undefined;
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, { provider: "postgresql" }),
 
+  // Must match the public URL where the frontend calls /api/auth/*
+  baseURL: BETTER_AUTH_BASE_URL,
 
-  baseURL: "https://foodhub-backend-3poi.onrender.com",
-
-
+  // Allow the frontend origin(s) to talk to auth
   trustedOrigins: [
-    "http://localhost:3000",
-    "https://foodhub-backend-3poi.onrender.com",
-  ],
-
+    FRONTEND_URL,
+    process.env.FRONTEND_URL?.replace(/\/$/, "") || FRONTEND_URL,
+    process.env.BACKEND_URL?.replace(/\/$/, "") ||
+      "https://foodhub-backend-3poi.onrender.com",
+  ].filter(Boolean),
 
   cookies: {
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
+    // False in dev (http), true in prod (https).
+    secure: isProduction,
+    // Browsers require `Secure` when SameSite=None.
+    // Use lax in dev so cookies work on http://localhost:3000,
+    // and None in prod when you are on HTTPS.
+    sameSite: isProduction ? "none" : "lax",
+    // In prod you can scope this via COOKIE_DOMAIN (e.g. ".foodhub.com").
+    // If undefined, Better Auth will use a host-only cookie.
+    domain: COOKIE_DOMAIN,
   },
 
   emailAndPassword: {

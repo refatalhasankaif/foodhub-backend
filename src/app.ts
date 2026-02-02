@@ -13,29 +13,35 @@ import { categoryRoutes } from "./module/categories/category.routes";
 
 const app: Application = express();
 
-app.use(cors(
-    {
-  origin: process.env.APP_URL || "http://localhost:3000",
-  credentials: true,
-}
-));
+app.use(
+  cors({
+    // Allow the Next.js frontend origin in dev and prod.
+    // Example:
+    //   APP_URL=http://localhost:3000   (dev)
+    //   APP_URL=https://foodhub-frontend.com (prod)
+    origin: process.env.APP_URL || "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
-app.all('/api/auth/{*any}', toNodeHandler(auth));
+// Expose Better Auth under /api/auth/* so the frontend can
+// call /api/auth/* on its own origin (and proxy to this backend).
+app.all("/api/auth/*", toNodeHandler(auth));
 
-app.use("/auth", authRouter)
-app.use("/providers", providerRoutes)
-app.use("/meals", mealRoutes)
-app.use("/orders", orderRoutes)
-app.use("/reviews", reviewRoutes)
-app.use("/admin", adminRoutes)
-app.use("/categories", categoryRoutes)
+app.use("/auth", authRouter);
+app.use("/providers", providerRoutes);
+app.use("/meals", mealRoutes);
+app.use("/orders", orderRoutes);
+app.use("/reviews", reviewRoutes);
+app.use("/admin", adminRoutes);
+app.use("/categories", categoryRoutes);
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello world');
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello world");
 });
 
-app.use(notFound)
+app.use(notFound);
 
 export default app;
