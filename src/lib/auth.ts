@@ -50,8 +50,9 @@ export const auth = betterAuth({
       },
       address: {
         type: "string",
-        required: true,
+        required: false,
         input: true,
+
       },
     },
   },
