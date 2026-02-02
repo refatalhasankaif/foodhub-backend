@@ -28,7 +28,7 @@ app.use(express.json());
 
 // Expose Better Auth under /api/auth/* so the frontend can
 // call /api/auth/* on its own origin (and proxy to this backend).
-app.all("/api/auth/*", toNodeHandler(auth));
+app.use("/api/auth", toNodeHandler(auth));
 
 app.use("/auth", authRouter);
 app.use("/providers", providerRoutes);
