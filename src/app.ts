@@ -13,12 +13,18 @@ import { categoryRoutes } from "./module/categories/category.routes";
 
 const app: Application = express();
 
-app.use(cors(
-//     {
-//   origin: process.env.APP_URL || "http://localhost:4000",
-//   credentials: true,
-// }
-));
+
+app.use(cors());
+
+app.use(cors({
+    origin: [
+        "http://localhost:3000",         
+        "" 
+    ],
+    credentials: true,                   
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.use(express.json());
 
@@ -33,7 +39,7 @@ app.use("/admin", adminRoutes)
 app.use("/categories", categoryRoutes)
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Hello world');
+    res.send('Hello world');
 });
 
 app.use(notFound)
