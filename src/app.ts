@@ -13,17 +13,15 @@ import { categoryRoutes } from "./module/categories/category.routes";
 
 const app: Application = express();
 
-
-app.use(cors());
-
+// Single CORS configuration - NO app.use(cors()) above this
 app.use(cors({
     origin: [
-        "http://localhost:3000",         
-        "" 
+        "http://localhost:3000",
+        "http://localhost:5000",
     ],
-    credentials: true,                   
+    credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
 }));
 
 app.use(express.json());
