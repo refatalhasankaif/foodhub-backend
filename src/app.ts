@@ -18,6 +18,7 @@ app.use(cors({
     origin: [
         "http://localhost:3000",
         "http://localhost:5000",
+        "https://foodhub-backend-3poi.onrender.com"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
