@@ -8,16 +8,19 @@ const ALLOWED_ROLES: UserRole[] = [UserRole.CUSTOMER, UserRole.PROVIDER];
 
 export const auth = betterAuth({
     database: prismaAdapter(prisma, { provider: "postgresql" }),
-    
-
-    baseURL: "https://foodhub-backend-3poi.onrender.com",
+    trustedOrigins: [
+        "http://localhost:3000",
+        "http://localhost:5000",
+        "https://foodhub-backend-3poi.onrender.com",
+    ],
+    baseURL: process.env.BETTER_AUTH_URL,
     secret: process.env.BETTER_AUTH_SECRET,
-    
+
     emailAndPassword: {
         enabled: true,
         requireEmailVerification: false,
     },
-    
+
     user: {
         additionalFields: {
             role: {
@@ -44,20 +47,32 @@ export const auth = betterAuth({
             },
         },
     },
-    
 
-    advanced: {
-        useSecureCookies: process.env.NODE_ENV === "production", 
-        crossSubDomainCookies: {
-            enabled: false,
-        },
-        defaultCookieAttributes: {
-            sameSite: "none", 
-            secure: false,    
-            httpOnly: true,  
-        },
-    },
-    
+
+    // advanced: {
+    //     useSecureCookies: true,
+
+    //     defaultCookieAttributes: {
+    //         sameSite: "none",
+    //         secure: true,
+    //         httpOnly: true,
+    //         path: "/",
+    //         partitioned: true,  // ← Chrome 114+ requirement for cross-site cookies (CHIPS)
+    //     },
+
+    //     cookies: {
+    //         session_token: {
+    //             attributes: {
+    //                 sameSite: "none",
+    //                 secure: true,
+    //                 httpOnly: true,
+    //                 path: "/",
+    //                 partitioned: true,
+    //             }
+    //         }
+    //     }
+    // },
+
     hooks: {
         before: async (context: any) => {
             const isSignup = context.path === "/sign-up/email";
@@ -88,10 +103,6 @@ export const auth = betterAuth({
             }
         },
     },
-    
-    trustedOrigins: [
-        "http://localhost:3000",
-        "http://localhost:5000",
-        "https://foodhub-backend-3poi.onrender.com",
-    ],
+
+
 });

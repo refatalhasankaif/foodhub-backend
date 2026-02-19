@@ -10,25 +10,24 @@ import { reviewRoutes } from "./module/reviews/reviews.routes";
 import { adminRoutes } from "./module/admin/admin.routes";
 import { notFound } from "./middlewares/notFound";
 import { categoryRoutes } from "./module/categories/category.routes";
+import { env } from "process";
 
 const app: Application = express();
 
-// Single CORS configuration - NO app.use(cors()) above this
-app.use(cors({
-    origin: [
-        "http://localhost:3000",
-        "http://localhost:5000",
-        "https://foodhub-backend-3poi.onrender.com"
-    ],
+app.use(
+  cors({
+    origin: env.ORIGIN_URL || "http://localhost:3000",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-}));
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+    exposedHeaders: ["set-cookie"],
+    allowedHeaders: ["Content-Type", "Authorization", "set-cookie"],
+  }),
+);
 
 app.use(express.json());
 
-app.use("/api/auth", toNodeHandler(auth));
-
+// app.use("/api/auth", toNodeHandler(auth));
+app.all("/api/auth/*path", toNodeHandler(auth));
 app.use("/auth", authRouter)
 app.use("/providers", providerRoutes)
 app.use("/meals", mealRoutes)
