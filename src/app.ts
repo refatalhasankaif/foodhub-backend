@@ -15,19 +15,17 @@ import { notFound } from "./middlewares/notFound";
 
 const app: Application = express();
 
-// ── Fixed CORS ───────────────────────────────────────────────────────────────
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5000",
-  "https://your-frontend-name.onrender.com",   // ← CHANGE THIS
-  // "https://foodhub-frontend.vercel.app",     // if using Vercel
+  "https://foodhub-backend-3poi.onrender.com",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
       if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, origin); // reflect requesting origin
+        callback(null, origin);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
@@ -41,10 +39,8 @@ app.use(
 
 app.use(express.json());
 
-// Better Auth handler
 app.all("/api/auth/*path", toNodeHandler(auth));
 
-// your other routes
 app.use("/auth", authRouter);
 app.use("/providers", providerRoutes);
 app.use("/meals", mealRoutes);

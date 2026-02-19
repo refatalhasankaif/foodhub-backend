@@ -13,12 +13,9 @@ export const auth = betterAuth({
     "http://localhost:3000",
     "http://localhost:5000",
     "https://foodhub-backend-3poi.onrender.com",
-    // ADD YOUR FRONTEND URL HERE (very important!)
-    "https://your-frontend-name.onrender.com",           // ← CHANGE THIS
-    // "https://foodhub-frontend.vercel.app",             // example if on Vercel
   ],
 
-  baseURL: process.env.BETTER_AUTH_URL, // or set to backend url if needed
+  baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
 
   emailAndPassword: {
@@ -53,24 +50,16 @@ export const auth = betterAuth({
     },
   },
 
-  // Cookie settings – relaxed because we use proxy (same-origin cookies)
+  
   advanced: {
     useSecureCookies: process.env.NODE_ENV === "production",
 
     defaultCookieAttributes: {
-      sameSite: "lax",          // "lax" is usually enough with proxy
+      sameSite: "lax",         
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
       path: "/",
-      // partitioned: true,     // ← only needed without proxy / cross-site
     },
-
-    // If you want stricter control:
-    // cookies: {
-    //   session_token: {
-    //     attributes: { sameSite: "lax", secure: true, httpOnly: true, path: "/" }
-    //   }
-    // }
   },
 
   hooks: {
