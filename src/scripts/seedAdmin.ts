@@ -1,54 +1,44 @@
-import { prisma } from "../lib/prisma"
-import { UserRole, UserStatus } from "../../generated/prisma/client"
+import { prisma } from "../lib/prisma";
+import { auth } from "../lib/auth";
 
 async function seedAdmin() {
     try {
-        const adminEmail = "admin@foodhub.com";
-        const adminAddress = "HQ - FoodHub, Mirpur - 10, Bangladesh";
+        const adminEmail    = "admin@foodhub.com";
+        const adminPassword = "Admin@123";
 
-        const existingUser = await prisma.user.findUnique({
-            where: { email: adminEmail }
+        const existing = await prisma.user.findUnique({
+            where: { email: adminEmail },
         });
-        
-        if (existingUser) {
-            console.log("Admin already exists");
+
+        if (existing) {
+            console.log("Admin already exists:", existing.email);
             return;
         }
 
-        const signUpResponse = await fetch("http://localhost:5000/api/auth/sign-up/email", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Origin": "http://localhost:5000",
+        await auth.api.signUpEmail({
+            body: {
+                name:     "Admin User",
+                email:    adminEmail,
+                password: adminPassword,
+                address:  "HQ - FoodHub, Mirpur - 10, Bangladesh",
             },
-            body: JSON.stringify({
-                name: "Admin User",
-                email: adminEmail,
-                password: "Admin@123",
-                role: UserRole.CUSTOMER,
-                address: adminAddress
-            })
         });
-
-        const responseData = await signUpResponse.json();
-
-        if (!signUpResponse.ok) {
-            console.log("Response:", responseData);
-            throw new Error("Signup failed");
-        }
 
         await prisma.user.update({
             where: { email: adminEmail },
             data: {
-                role: UserRole.ADMIN,
-                emailVerified: true
-            }
+                role:          "ADMIN",
+                emailVerified: true,
+            },
         });
 
-        console.log("Admin seeded successfully");
-        
+        console.log("✓ Admin seeded successfully");
+        console.log("  Email:   ", adminEmail);
+        console.log("  Password:", adminPassword);
+
     } catch (error) {
         console.error("Seeding failed:", error);
+        process.exit(1);
     } finally {
         await prisma.$disconnect();
     }
