@@ -13,6 +13,7 @@ export const auth = betterAuth({
     "http://localhost:3000",
     "http://localhost:5000",
     "https://foodhub-backend-3poi.onrender.com",
+    "https://foodhub-frontend-xi.vercel.app"
   ],
 
   baseURL: process.env.BETTER_AUTH_URL,
