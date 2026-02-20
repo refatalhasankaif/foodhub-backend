@@ -15,27 +15,39 @@ import { notFound } from "./middlewares/notFound";
 
 const app: Application = express();
 
+// In your main app file (before any routes)
 const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:5000",
-  "https://foodhub-backend-3poi.onrender.com",
+  "https://your-foodhub-frontend.vercel.app", // ← add your real Vercel domain(s)
+  // Add preview URLs if needed: https://foodhub-frontend-git-main-yourusername.vercel.app
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, origin);
+      // Allow no-origin requests (Postman, server-side fetches)
+      if (!origin) return callback(null, true);
+
+      // Check against allowed list
+      if (allowedOrigins.includes(origin)) {
+        callback(null, origin); // Reflect exact origin
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error(`CORS policy: origin ${origin} not allowed`));
       }
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"],
+    methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "HEAD"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200,
+    exposedHeaders: ["Set-Cookie"], // Let browser see Set-Cookie
+    maxAge: 86400, // Cache preflight 24h
   })
 );
+
+// Handle OPTIONS explicitly (sometimes needed)
+app.options("*", (req, res) => {
+  res.sendStatus(204);
+});
 
 app.use(express.json());
 
