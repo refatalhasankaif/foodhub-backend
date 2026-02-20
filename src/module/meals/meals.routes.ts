@@ -5,36 +5,30 @@ import { mealController } from "./meals.controller";
 const router = Router();
 
 router.get(
-    "/", 
-    mealController.getAllMeals
-);
+    "/", mealController.getAllMeals
 
+);
 router.get(
     "/:id", mealController.getMealById
-);
 
-router.get(
-  "/me",
-  authMiddleware(UserRole.PROVIDER),
-  mealController.getMyMeals
 );
 
 router.post(
-  "/create",
-  authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
-  mealController.createMeal
+    "/create",
+    authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
+    mealController.createMeal
 );
 
 router.patch(
-  "/:id",
-  authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
-  mealController.updateMeal
+    "/:id",
+    authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
+    mealController.updateMeal
 );
 
 router.delete(
-  "/:id",
-  authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
-  mealController.deleteMeal
+    "/:id",
+    authMiddleware(UserRole.PROVIDER, UserRole.ADMIN),
+    mealController.deleteMeal
 );
 
 export const mealRoutes: Router = router;
