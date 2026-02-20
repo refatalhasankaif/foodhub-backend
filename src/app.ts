@@ -16,37 +16,34 @@ import { notFound } from "./middlewares/notFound";
 const app: Application = express();
 
 // In your main app file (before any routes)
+// CORS middleware (keep your dynamic origin check)
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin) {
-        // Allow Postman, curl, server-side requests
-        return callback(null, true);
-      }
+      if (!origin) return callback(null, true);
 
-      // Your allowed list
       const allowed = [
         "http://localhost:3000",
-        "https://your-foodhub-frontend.vercel.app", // ← add this
-        // Add preview branches if needed
+        "https://your-foodhub-frontend.vercel.app", // ← your real Vercel URL
+        // add branch previews if needed
       ];
 
       if (allowed.includes(origin)) {
-        callback(null, origin); // reflect the origin
+        callback(null, origin);
       } else {
-        callback(new Error(`Not allowed by CORS: ${origin}`));
+        callback(new Error(`CORS not allowed: ${origin}`));
       }
     },
     credentials: true,
     methods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS", "HEAD"],
     allowedHeaders: ["Content-Type", "Authorization"],
     exposedHeaders: ["Set-Cookie"],
-    maxAge: 86400, // Cache preflight for 24h
+    maxAge: 86400,
   })
 );
 
-// Explicit OPTIONS handler (sometimes needed on Render)
-app.options("*", cors(), (req, res) => {
+// Fix OPTIONS handler
+app.options("/*", cors(), (req, res) => {
   res.sendStatus(204);
 });
 
