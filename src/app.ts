@@ -2,8 +2,6 @@ import express, { Application, Request, Response } from "express";
 import cors from "cors";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
-
-// your other route imports...
 import { authRouter } from "./module/auth/auth.routes";
 import { providerRoutes } from "./module/providers/provider.routes";
 import { mealRoutes } from "./module/meals/meals.routes";
@@ -15,8 +13,6 @@ import { notFound } from "./middlewares/notFound";
 
 const app: Application = express();
 
-// In your main app file (before any routes)
-// CORS middleware (keep your dynamic origin check)
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -24,8 +20,8 @@ app.use(
 
       const allowed = [
         "http://localhost:3000",
-        "https://your-foodhub-frontend.vercel.app", // ← your real Vercel URL
-        // add branch previews if needed
+        "https://your-foodhub-frontend.vercel.app", 
+
       ];
 
       if (allowed.includes(origin)) {
@@ -41,11 +37,6 @@ app.use(
     maxAge: 86400,
   })
 );
-
-// Fix OPTIONS handler
-app.options("/*", cors(), (req, res) => {
-  res.sendStatus(204);
-});
 
 app.use(express.json());
 
