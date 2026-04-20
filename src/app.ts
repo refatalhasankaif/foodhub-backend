@@ -19,8 +19,8 @@ app.use(
       if (!origin) return callback(null, true);
 
       const allowed = [
+        "https://project-foodhub.vercel.app",
         "http://localhost:3000",
-        "https://foodhub-frontend-xi.vercel.app", 
       ];
 
       if (allowed.includes(origin)) {
