@@ -7,6 +7,7 @@
         "dev": "npx tsx watch src/server.ts",
         "build": "prisma generate && tsup src/server.ts --format cjs --platform node --target node22 --out-dir dist --external pg-native",
         "start": "node dist/server.js",
+        "vercel-build": "prisma generate",
         "seed:admin": "npx tsx src/scripts/seedAdmin.ts"
     },
     "keywords": [],
